@@ -1,32 +1,53 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
-	"github.com/gofiber/fiber"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
-func main() {
-	// Define constants
-	const port = 3000
-
-	// Fiber instance
-	app := fiber.New()
-
-	// Routes
-	app.Get("/", hello)
-
-	// 404 Handler
-	app.Use(func(c *fiber.Ctx) {
-		// nolint: gomnd
-		c.SendStatus(404)
-	})
-
-	// Start server
-	log.Fatal(app.Listen(port))
+type Product struct {
+	gorm.Model
+	Code  string
+	Price uint
 }
 
-// Handler
-func hello(c *fiber.Ctx) {
-	c.Send("Hello, World 👋!")
+func main() {
+	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	// migrate the schema.
+	db.AutoMigrate(&Product{})
+
+	// create.
+	db.Create(&Product{
+		Code:  "ABC_XYZ",
+		Price: 100,
+	})
+
+	// read.
+	var product Product
+	// find product with integer primary key.
+	db.First(&product, 1)
+	fmt.Printf("read 1: %v\n", product)
+	// find product with code ABC_XYZ
+	db.First(&product, "code = ?", "ABC_XYZ")
+	fmt.Printf("read 2: %v\n", product)
+
+	// update.
+	// update product's price to 120.
+	db.Model(&product).Update("Price", 120)
+	// update multiple fields.
+	db.Model(&product).Updates(Product{
+		Code:  "MOEW_MOEW",
+		Price: 150,
+	})
+	// map[string]interface{} in Go: https://bitfieldconsulting.com/golang/map-string-interface.
+	db.Model(&product).Updates(map[string]interface{}{"Price": 399, "Code": "KAKAKA"})
+
+	// delete.
+	db.Delete(&product, 1)
 }
