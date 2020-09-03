@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
+// Product model.
 type Product struct {
 	gorm.Model
 	Code  string
@@ -14,13 +15,19 @@ type Product struct {
 }
 
 func main() {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  "host=0.0.0.0 user=postgres password=postgres dbname=postgres port=5432",
+		PreferSimpleProtocol: true,
+	}), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	// migrate the schema.
-	db.AutoMigrate(&Product{})
+	err = db.AutoMigrate(&Product{})
+	if err != nil {
+		panic("failed to migrate the schema")
+	}
 
 	// create.
 	db.Create(&Product{
