@@ -1,3 +1,4 @@
+// Package routes gin's routes
 package routes
 
 import (
@@ -5,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SetupRouter setup gin's router
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 	group := router.Group("/cats")
