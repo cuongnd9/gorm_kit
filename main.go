@@ -1,72 +1,32 @@
 package main
 
 import (
-	"fmt"
-
+	"github.com/103cuong/gorm_kit/configs"
+	"github.com/103cuong/gorm_kit/models"
+	"github.com/103cuong/gorm_kit/routes"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-// Product model.
-type Product struct {
-	gorm.Model
-	Code  string
-	Price uint
-}
-
 func main() {
-	db, err := gorm.Open(postgres.New(postgres.Config{
-		DSN:                  "host=0.0.0.0 user=postgres password=postgres dbname=postgres port=5432",
+	var err error
+	configs.DB, err = gorm.Open(postgres.New(postgres.Config{
+		DSN:                  configs.BuildDSN(),
 		PreferSimpleProtocol: true,
 	}), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	// migrate the schema.
-	err = db.AutoMigrate(&Product{})
+	// migrate the scheme.
+	err = configs.DB.AutoMigrate(&models.Cat{})
 	if err != nil {
 		panic("failed to migrate the schema")
 	}
 
-	// create.
-	newUser := Product{
-		Code:  "ABC_XYZ",
-		Price: 100,
+	router := routes.SetupRouter()
+	err = router.Run()
+	if err != nil {
+		panic("failed to run server")
 	}
-	db.Create(&newUser)
-
-	// read.
-	var product Product
-	// find product with integer primary key.
-	db.First(&product, 1)
-	fmt.Printf("read 1: %v\n", product)
-	// find product with code ABC_XYZ.
-	db.First(&product, "code = ?", "ABC_XYZ")
-	fmt.Printf("read 2: %v\n", product)
-
-	// read all.
-	var products []Product
-	//db.Find(&products, "code = ?", "ABC_XYZ")
-	//db.Where("code = ?", "ABC_XYZ").Find(&products)
-	//db.Where(&Product{
-	//	Code:  "ABC_XYZ",
-	//	Price: 100,
-	//}).Find(&products)
-	db.Where(map[string]interface{}{"code": "ABC_XYZ"}).Find(&products)
-	fmt.Printf("💅 products: %v", products)
-
-	// update.
-	// update product's price to 120.
-	db.Model(&product).Update("Price", 120)
-	// update multiple fields.
-	db.Model(&product).Updates(&Product{
-		Code:  "MOEW_MOEW",
-		Price: 150,
-	})
-	// map[string]interface{} in Go: https://bitfieldconsulting.com/golang/map-string-interface.
-	db.Model(&product).Updates(map[string]interface{}{"Price": 399, "Code": "KAKAKA"})
-
-	// delete.
-	db.Delete(&product, 1)
 }
