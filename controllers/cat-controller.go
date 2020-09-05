@@ -5,13 +5,14 @@ import (
 	"net/http"
 
 	"github.com/103cuong/gorm_kit/models"
+	"github.com/103cuong/gorm_kit/services"
 	"github.com/gin-gonic/gin"
 )
 
 // GetCats Get all cats.
 func GetCats(ctx *gin.Context) {
 	var cats []models.Cat
-	err := models.GetCats(&cats)
+	err := services.GetCats(&cats)
 	if err != nil {
 		// FIXME: response status + error.
 		ctx.AbortWithStatus(http.StatusNotFound)
@@ -28,7 +29,7 @@ func CreateCat(ctx *gin.Context) {
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	err = models.CreateCat(&cat)
+	err = services.CreateCat(&cat)
 	if err != nil {
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -40,7 +41,7 @@ func CreateCat(ctx *gin.Context) {
 func GetCatByID(ctx *gin.Context) {
 	id := ctx.Params.ByName("id")
 	var cat models.Cat
-	err := models.GetCatByID(&cat, id)
+	err := services.GetCatByID(&cat, id)
 	if err != nil {
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -52,7 +53,7 @@ func GetCatByID(ctx *gin.Context) {
 func UpdateCat(ctx *gin.Context) {
 	id := ctx.Params.ByName("id")
 	var cat models.Cat
-	err := models.GetCatByID(&cat, id)
+	err := services.GetCatByID(&cat, id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, cat)
 		return
@@ -62,7 +63,7 @@ func UpdateCat(ctx *gin.Context) {
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	err = models.UpdateCat(&cat)
+	err = services.UpdateCat(&cat)
 	if err != nil {
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -74,7 +75,7 @@ func UpdateCat(ctx *gin.Context) {
 func DeleteCat(ctx *gin.Context) {
 	var cat models.Cat
 	id := ctx.Params.ByName("id")
-	err := models.DeleteCat(&cat, id)
+	err := services.DeleteCat(&cat, id)
 	if err != nil {
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 		return

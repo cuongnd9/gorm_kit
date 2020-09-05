@@ -3,9 +3,10 @@ package configs
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/mcuadros/go-defaults"
 	"gorm.io/gorm"
-	"os"
 )
 
 // DB GORM DB instance
