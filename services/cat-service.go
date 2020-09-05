@@ -1,12 +1,13 @@
-// Package models gorm's models
-package models
+// Package services gorm's models
+package services
 
 import (
 	"github.com/103cuong/gorm_kit/configs"
+	"github.com/103cuong/gorm_kit/models"
 )
 
 // GetCats fetch all cats.
-func GetCats(cats *[]Cat) (err error) {
+func GetCats(cats *[]models.Cat) (err error) {
 	err = configs.DB.Find(&cats).Error
 	if err != nil {
 		return err
@@ -15,7 +16,7 @@ func GetCats(cats *[]Cat) (err error) {
 }
 
 // CreateCat create new cat.
-func CreateCat(cat *Cat) (err error) {
+func CreateCat(cat *models.Cat) (err error) {
 	err = configs.DB.Create(&cat).Error
 	if err != nil {
 		return err
@@ -24,7 +25,7 @@ func CreateCat(cat *Cat) (err error) {
 }
 
 // GetCatByID fetch cat by ID.
-func GetCatByID(cat *Cat, id string) (err error) {
+func GetCatByID(cat *models.Cat, id string) (err error) {
 	err = configs.DB.Where("id = ?", id).First(&cat).Error
 	if err != nil {
 		return err
@@ -33,7 +34,7 @@ func GetCatByID(cat *Cat, id string) (err error) {
 }
 
 // UpdateCat update cat.
-func UpdateCat(cat *Cat) (err error) {
+func UpdateCat(cat *models.Cat) (err error) {
 	err = configs.DB.Save(&cat).Error
 	if err != nil {
 		return err
@@ -42,7 +43,7 @@ func UpdateCat(cat *Cat) (err error) {
 }
 
 // DeleteCat delete cat.
-func DeleteCat(cat *Cat, id string) (err error) {
+func DeleteCat(cat *models.Cat, id string) (err error) {
 	err = configs.DB.Where("id = ?", id).Delete(&cat).Error
 	if err != nil {
 		return err

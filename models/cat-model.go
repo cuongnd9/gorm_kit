@@ -1,3 +1,4 @@
+// Package models gorm's models
 package models
 
 // Cat cat model struct
