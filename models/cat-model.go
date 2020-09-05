@@ -2,7 +2,7 @@ package models
 
 // Cat cat model struct
 type Cat struct {
-	ID    string `json:"id"`
+	Pure  `gorm:"embedded"`
 	Name  string `json:"name"`
 	Color string `json:"color"`
 }
