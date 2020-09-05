@@ -23,6 +23,6 @@ RUN cp /build/main .
 FROM scratch
 COPY --from=builder /dist/main /
 # Export necessary port
-EXPOSE 3000
+EXPOSE 8080
 # Command to run
 ENTRYPOINT ["/main"]
