@@ -3,8 +3,6 @@ package models
 
 import (
 	"github.com/103cuong/gorm_kit/configs"
-	// postgres driver
-	_ "gorm.io/driver/postgres"
 )
 
 // GetCats fetch all cats.

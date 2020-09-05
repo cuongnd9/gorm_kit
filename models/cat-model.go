@@ -9,5 +9,5 @@ type Cat struct {
 
 // TableName get table name
 func (cat *Cat) TableName() string {
-	return "cat"
+	return "cats"
 }

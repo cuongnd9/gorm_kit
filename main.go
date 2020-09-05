@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/103cuong/gorm_kit/configs"
-	"github.com/103cuong/gorm_kit/models"
+	"github.com/103cuong/gorm_kit/migrations"
 	"github.com/103cuong/gorm_kit/routes"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -18,11 +18,8 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	// migrate the scheme.
-	err = configs.DB.AutoMigrate(&models.Cat{})
-	if err != nil {
-		panic("failed to migrate the schema")
-	}
+	// migrate database.
+	migrations.MigrateDB("up")
 
 	router := routes.SetupRouter()
 	err = router.Run()

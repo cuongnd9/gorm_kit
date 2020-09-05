@@ -34,7 +34,7 @@ func BuildDBConfig() *DBConfig {
 // BuildDSN build Postgresql's DSN
 func BuildDSN() string {
 	dbConfig := BuildDBConfig()
-	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d",
+	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable",
 		dbConfig.Host,
 		dbConfig.User,
 		dbConfig.Password,
