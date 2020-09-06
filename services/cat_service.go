@@ -1,4 +1,4 @@
-// Package services gorm's models
+// Package services contain all business logic
 package services
 
 import (

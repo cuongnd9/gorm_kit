@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetCats Get all cats.
+// GetCats get all cats.
 func GetCats(ctx *gin.Context) {
 	var cats []models.Cat
 	err := services.GetCats(&cats)
@@ -21,7 +21,7 @@ func GetCats(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, cats)
 }
 
-// CreateCat Create new cat.
+// CreateCat create new cat.
 func CreateCat(ctx *gin.Context) {
 	var cat models.Cat
 	err := ctx.BindJSON(&cat)
@@ -37,7 +37,7 @@ func CreateCat(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, cat)
 }
 
-// GetCatByID Get cat by id.
+// GetCatByID get cat by id.
 func GetCatByID(ctx *gin.Context) {
 	id := ctx.Params.ByName("id")
 	var cat models.Cat
@@ -49,7 +49,7 @@ func GetCatByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, cat)
 }
 
-// UpdateCat Update cat.
+// UpdateCat update cat.
 func UpdateCat(ctx *gin.Context) {
 	id := ctx.Params.ByName("id")
 	var cat models.Cat
@@ -71,7 +71,7 @@ func UpdateCat(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, cat)
 }
 
-// DeleteCat Delete cat.
+// DeleteCat delete cat.
 func DeleteCat(ctx *gin.Context) {
 	var cat models.Cat
 	id := ctx.Params.ByName("id")
