@@ -1,15 +1,14 @@
-// Package routes gin's routes
-package routes
+// Package v1 router v1
+package v1
 
 import (
 	"github.com/103cuong/gorm_kit/controllers"
 	"github.com/gin-gonic/gin"
 )
 
-// SetupRouter setup gin's router
-func SetupRouter() *gin.Engine {
-	router := gin.Default()
-	group := router.Group("/cats")
+// InitCatRouter initialize cat router
+func InitCatRouter(r *gin.RouterGroup) *gin.RouterGroup {
+	group := r.Group("/cats")
 	{
 		group.GET("/", controllers.GetCats)
 		group.GET("/:id", controllers.GetCatByID)
@@ -17,5 +16,5 @@ func SetupRouter() *gin.Engine {
 		group.PUT("/:id", controllers.UpdateCat)
 		group.DELETE("/:id", controllers.DeleteCat)
 	}
-	return router
+	return r
 }
