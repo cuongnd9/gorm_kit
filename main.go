@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/103cuong/gorm_kit/configs"
 	"github.com/103cuong/gorm_kit/migrations"
-	"github.com/103cuong/gorm_kit/routers"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -21,9 +20,5 @@ func main() {
 	// migrate database.
 	migrations.MigrateDB("up")
 
-	r := routers.InitRouter()
-	err = r.Run(":9000")
-	if err != nil {
-		panic("failed to run server")
-	}
+	// your code: gin, mux, grpc, etc.
 }
