@@ -8,7 +8,7 @@ import (
 
 // GetCategories fetch all categories
 func GetCategories(categories *[]models.Category) (err error) {
-	err = configs.DB.Find(&categories).Error
+	err = configs.DB.Preload("Cats").Find(&categories).Error
 	if err != nil {
 		return err
 	}
