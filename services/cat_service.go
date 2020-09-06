@@ -8,7 +8,7 @@ import (
 
 // GetCats fetch all cats.
 func GetCats(cats *[]models.Cat) (err error) {
-	err = configs.DB.Find(&cats).Error
+	err = configs.DB.Preload("Category").Find(&cats).Error
 	if err != nil {
 		return err
 	}
@@ -26,7 +26,7 @@ func CreateCat(cat *models.Cat) (err error) {
 
 // GetCatByID fetch cat by ID.
 func GetCatByID(cat *models.Cat, id string) (err error) {
-	err = configs.DB.Where("id = ?", id).First(&cat).Error
+	err = configs.DB.Preload("Category").Where("id = ?", id).First(&cat).Error
 	if err != nil {
 		return err
 	}
