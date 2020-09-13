@@ -3,9 +3,6 @@ package migrations
 import (
 	"database/sql"
 
-	"github.com/103cuong/gorm_kit/configs"
-	"github.com/103cuong/gorm_kit/models"
-
 	"github.com/pressly/goose"
 )
 
@@ -14,7 +11,23 @@ func init() {
 }
 
 func upCreateCategories(tx *sql.Tx) error {
-	err := configs.DB.AutoMigrate(&models.Category{})
+	_, err := tx.Exec(`
+	create table if not exists categories
+	(
+		id uuid default uuid_generate_v4() not null
+			constraint categories_pkey
+				primary key,
+		created_at timestamp with time zone,
+		updated_at timestamp with time zone,
+		deleted_at timestamp with time zone,
+		name text
+	);
+	
+	alter table categories owner to postgres;
+	
+	create index if not exists idx_categories_deleted_at
+		on categories (deleted_at);
+	`)
 	if err != nil {
 		return err
 	}
@@ -22,7 +35,7 @@ func upCreateCategories(tx *sql.Tx) error {
 }
 
 func downCreateCategories(tx *sql.Tx) error {
-	err := configs.DB.Migrator().DropTable(&models.Category{})
+	_, err := tx.Exec(`drop table if exists categories;`)
 	if err != nil {
 		return err
 	}
